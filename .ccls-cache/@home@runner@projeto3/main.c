@@ -19,6 +19,7 @@ int main() {
     switch (opcao) {
     case 1:
       printf("Você selecionou a opção de adicionar contato\n");
+      adicionar_contato();
       break;
     case 2:
       printf("Você selecionou a opção de listar contatos\n");
