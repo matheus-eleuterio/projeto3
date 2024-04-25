@@ -92,4 +92,17 @@ void salvar_agenda() {
   printf("\nAgenda salva em arquivo binário!\n");
 }
 
-void carregar_agenda() {}
+void carregar_agenda() {
+  FILE *arquivo;
+  arquivo = fopen("agenda.bin", "rb");
+
+  if (arquivo == NULL) {
+      printf("Erro ao abrir o arquivo!\n");
+      return;
+  }
+
+  qnt_contatos = fread(agenda, sizeof(struct Contato), MAX_CONTATOS, arquivo);
+  fclose(arquivo);
+
+  printf("\nAgenda carregada do arquivo binario!\n");
+}
