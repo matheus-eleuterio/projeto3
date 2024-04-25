@@ -35,6 +35,7 @@ int main() {
       break;
     case 5:
       printf("Você selecionou a opção de carregar agenda.\n");
+      carregar_agenda();
       break;
     case 0:
       printf("Você saiu do programa.\n");
