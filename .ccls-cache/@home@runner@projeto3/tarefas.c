@@ -22,13 +22,13 @@ void adicionar_contato() {
     return;
   }
   printf("\nNome: ");
-  scanf("%s", agenda[qnt_contatos].nome);
+  scanf(" %[^\n]", agenda[qnt_contatos].nome);
   printf("Sobrenome: ");
-  scanf("%s", agenda[qnt_contatos].sobrenome);
+  scanf(" %[^\n]", agenda[qnt_contatos].sobrenome);
   printf("E-mail: ");
-  scanf("%s", agenda[qnt_contatos].email);
+  scanf(" %[^\n]", agenda[qnt_contatos].email);
   printf("Telefone (DDD+apenas números): ");
-  scanf("%s", agenda[qnt_contatos].telefone);
+  scanf(" %[^\n]", agenda[qnt_contatos].telefone);
   qnt_contatos++;
 
   printf("Contato adicionado a agenda com sucesso!\n");
