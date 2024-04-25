@@ -18,21 +18,22 @@ int main() {
 
     switch (opcao) {
     case 1:
-      printf("Você selecionou a opção de adicionar contato\n");
+      printf("Você selecionou a opção de adicionar contato.\n");
       adicionar_contato();
       break;
     case 2:
-      printf("Você selecionou a opção de listar contatos\n");
+      printf("Você selecionou a opção de listar contatos.\n");
       listar_contatos();
       break;
     case 3:
-      printf("Você selecionou a opção de deletar um contato\n");
+      printf("Você selecionou a opção de deletar um contato.\n");
+      deletar_contato();
       break;
     case 4:
-      printf("Você selecionou a opção de salvar agenda\n");
+      printf("Você selecionou a opção de salvar agenda.\n");
       break;
     case 5:
-      printf("Você selecionou a opção de carregar agenda\n");
+      printf("Você selecionou a opção de carregar agenda.\n");
       break;
     case 0:
       printf("Você saiu do programa.\n");
