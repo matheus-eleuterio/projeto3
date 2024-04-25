@@ -31,6 +31,7 @@ int main() {
       break;
     case 4:
       printf("Você selecionou a opção de salvar agenda.\n");
+      salvar_agenda();
       break;
     case 5:
       printf("Você selecionou a opção de carregar agenda.\n");
