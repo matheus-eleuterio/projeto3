@@ -17,7 +17,7 @@ int qnt_contatos = 0;
 
 void adicionar_contato() {
   if (qnt_contatos >= MAX_CONTATOS) {
-    printf("A agenda atingiu seu limite máximo de contatos. Não é possível "
+    printf("\nA agenda atingiu seu limite máximo de contatos. Não é possível "
            "adicionar mais contatos.\n");
     return;
   }
@@ -36,13 +36,13 @@ void adicionar_contato() {
 
 void listar_contatos() {
   if (qnt_contatos == 0) {
-    printf("A agenda não possuí contatos\n");
+    printf("\nA agenda não possui contatos.\n");
     return;
   }
 
   printf("\nLista de contatos:\n");
   for (int i = 0; i < qnt_contatos; i++) {
-    printf("%d) Nome: %s %s | Email: %s | Telefone: %s\n", i + 1,
+    printf("\n%d) Nome: %s %s | Email: %s | Telefone: %s\n", i + 1,
            agenda[i].nome, agenda[i].sobrenome, agenda[i].email,
            agenda[i].telefone);
   }
@@ -50,7 +50,33 @@ void listar_contatos() {
   getchar();
 }
 
-void deletar_contato() {}
+void deletar_contato() {
+  if (qnt_contatos == 0) {
+    printf("\nNão existem contatos para deletar!\n");
+    return;
+  }
+  char telefone[15];
+  printf("\nDigite o telefone do contato que deseja deletar: ");
+  scanf(" %[^\n]", telefone);
+
+  int contato_existe = 0;
+  for (int i = 0; i < qnt_contatos; i++) {
+    if (strcmp(telefone, agenda[i].telefone) == 0) {
+      contato_existe = 1;
+      for (int j = i; j < qnt_contatos - 1; j++) {
+        agenda[j] = agenda[j + 1];
+      }
+      qnt_contatos--;
+      printf("Contato deletado com sucesso!\n");
+      break;
+    }
+  }
+
+  if (!contato_existe) {
+    printf(
+        "Não foi possível encontrar o contato. Verifique o número digitado.\n");
+  }
+}
 
 void salvar_agenda() {}
 
