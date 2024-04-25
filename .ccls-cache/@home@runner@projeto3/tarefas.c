@@ -22,19 +22,33 @@ void adicionar_contato() {
     return;
   }
   printf("\nNome: ");
-  scanf("%s", agenda[qnt_contatos].nome);
+  scanf(" %[^\n]", agenda[qnt_contatos].nome);
   printf("Sobrenome: ");
-  scanf("%s", agenda[qnt_contatos].sobrenome);
+  scanf(" %[^\n]", agenda[qnt_contatos].sobrenome);
   printf("E-mail: ");
-  scanf("%s", agenda[qnt_contatos].email);
+  scanf(" %[^\n]", agenda[qnt_contatos].email);
   printf("Telefone (DDD+apenas números): ");
-  scanf("%s", agenda[qnt_contatos].telefone);
+  scanf(" %[^\n]", agenda[qnt_contatos].telefone);
   qnt_contatos++;
 
   printf("Contato adicionado a agenda com sucesso!\n");
 }
 
-void listar_contatos() {}
+void listar_contatos() {
+  if (qnt_contatos == 0) {
+    printf("A agenda não possuí contatos\n");
+    return;
+  }
+
+  printf("\nLista de contatos:\n");
+  for (int i = 0; i < qnt_contatos; i++) {
+    printf("%d) Nome: %s %s | Email: %s | Telefone: %s\n", i + 1,
+           agenda[i].nome, agenda[i].sobrenome, agenda[i].email,
+           agenda[i].telefone);
+  }
+
+  getchar();
+}
 
 void deletar_contato() {}
 

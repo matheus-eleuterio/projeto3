@@ -23,6 +23,7 @@ int main() {
       break;
     case 2:
       printf("Você selecionou a opção de listar contatos\n");
+      listar_contatos();
       break;
     case 3:
       printf("Você selecionou a opção de deletar um contato\n");
