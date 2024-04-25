@@ -78,6 +78,18 @@ void deletar_contato() {
   }
 }
 
-void salvar_agenda() {}
+void salvar_agenda() {
+  FILE *arquivo = fopen("agenda.bin", "wb");
+
+  if (arquivo == NULL) {
+      printf("Erro ao abrir o arquivo!\n");
+      return;
+  }
+
+  fwrite(agenda, sizeof(struct Contato), qnt_contatos, arquivo);
+  fclose(arquivo);
+
+  printf("\nAgenda salva em arquivo binário!\n");
+}
 
 void carregar_agenda() {}
