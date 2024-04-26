@@ -1,6 +1,7 @@
 #include "tarefas.h"
 #include <stdio.h>
 
+
 // Função para limpar o buffer de entrada
 void clearInputBuffer() {
   int c;
@@ -82,8 +83,15 @@ int main() {
       break;
 
     default:
+
       printf("\nOpção inválida. Tente novamente.\n");
       break;
+
+      if (opcao != 0 && opcao != 1 && opcao != 2 && opcao != 3 && opcao != 4 &&
+          opcao != 5) {
+        printf("\nOpção inválida. Tente novamente.\n");
+      }
+
     }
   } while (opcao != 0);
 
