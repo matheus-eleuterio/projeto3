@@ -10,9 +10,6 @@ typedef struct {
   char telefone[11];
 } Contato;
 
-extern Contato agenda[LIMITE_CONTATOS];
-extern int qnt_contatos;
-
 typedef enum {
   OK,
   MAX_CONTATOS,
@@ -29,5 +26,9 @@ ERROS listar_contatos();
 ERROS deletar_contato();
 ERROS salvar_agenda();
 ERROS carregar_agenda();
+
+void clearBuffer();
+
+const char *mensagemErro(ERROS erro);
 
 #endif

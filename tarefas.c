@@ -3,36 +3,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define LIMITE_CONTATOS 255
-
-Contato agenda[LIMITE_CONTATOS];
-int qnt_contatos = 0;
-
-ERROS adicionar_contato() {
-  if (qnt_contatos >= LIMITE_CONTATOS) {
-    printf("\nA agenda atingiu seu limite máximo de contatos. Não é possível "
-           "adicionar mais contatos.\n");
+ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
+  if (*qnt_contatos >= LIMITE_CONTATOS) {
     return MAX_CONTATOS;
   }
 
   printf("\nNome: ");
-  scanf(" %[^\n]", agenda[qnt_contatos].nome);
+  scanf(" %[^\n]", agenda[*qnt_contatos].nome);
   printf("Sobrenome: ");
-  scanf(" %[^\n]", agenda[qnt_contatos].sobrenome);
+  scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
   printf("E-mail: ");
-  scanf(" %[^\n]", agenda[qnt_contatos].email);
+  scanf(" %[^\n]", agenda[*qnt_contatos].email);
   printf("Telefone (DDD+apenas números): ");
-  scanf(" %[^\n]", agenda[qnt_contatos].telefone);
-  qnt_contatos++;
-
-  printf("\nContato adicionado na agenda com sucesso!\n");
+  scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
+  (*qnt_contatos)++;
   return OK;
 }
 
-ERROS listar_contatos() {
+ERROS listar_contatos(Contato *agenda, int qnt_contatos) {
   if (qnt_contatos == 0) {
-    printf("\nA agenda não possui contatos.\n");
-    return SEM_CONTATOS; // Vinculando o erro SEM_CONTATOS à função
+    return SEM_CONTATOS;
   }
 
   printf("\nLista de contatos:\n");
@@ -41,14 +31,12 @@ ERROS listar_contatos() {
            agenda[i].nome, agenda[i].sobrenome, agenda[i].email,
            agenda[i].telefone);
   }
-
-  getchar(); // Limpar o buffer
+  clearBuffer();
   return OK;
 }
 
-ERROS deletar_contato() {
-  if (qnt_contatos == 0) {
-    printf("\nNão existem contatos para deletar!\n");
+ERROS deletar_contato(Contato *agenda, int *qnt_contatos) {
+  if (*qnt_contatos == 0) {
     return SEM_CONTATOS;
   }
 
@@ -57,54 +45,46 @@ ERROS deletar_contato() {
   scanf(" %[^\n]", telefone);
 
   int contato_existe = 0;
-  for (int i = 0; i < qnt_contatos; i++) {
+  for (int i = 0; i < *qnt_contatos; i++) {
     if (strcmp(telefone, agenda[i].telefone) == 0) {
       contato_existe = 1;
-      for (int j = i; j < qnt_contatos - 1; j++) {
+      for (int j = i; j < *qnt_contatos - 1; j++) {
         agenda[j] = agenda[j + 1];
       }
-      qnt_contatos--;
-      printf("\nContato deletado com sucesso!\n");
+      (*qnt_contatos)--;
+      return OK;
       break;
     }
   }
 
   if (!contato_existe) {
-    printf(
-        "Não foi possível encontrar o contato. Verifique o número digitado.\n");
     return NAO_ENCONTRADO;
   }
-
   return OK;
 }
 
-ERROS salvar_agenda() {
+ERROS salvar_agenda(Contato *agenda, int qnt_contatos) {
   FILE *arquivo = fopen("agenda.bin", "wb");
 
   if (arquivo == NULL) {
-    printf("Erro ao abrir o arquivo!\n");
     return ABRIR;
   }
 
   fwrite(agenda, sizeof(Contato), qnt_contatos, arquivo);
   fclose(arquivo);
-
-  printf("\nAgenda salva em arquivo binário!\n");
   return OK;
 }
 
-ERROS carregar_agenda() {
+ERROS carregar_agenda(Contato *agenda, int *qnt_contatos) {
   FILE *arquivo = fopen("agenda.bin", "rb");
 
   if (arquivo == NULL) {
-    printf("Erro ao abrir o arquivo!\n");
     return ABRIR;
   }
 
-  qnt_contatos = fread(agenda, sizeof(Contato), LIMITE_CONTATOS, arquivo);
+  *qnt_contatos = fread(agenda, sizeof(Contato), LIMITE_CONTATOS, arquivo);
   fclose(arquivo);
 
-  printf("\nAgenda carregada do arquivo binário!\n");
   return OK;
 }
 
@@ -114,3 +94,25 @@ void clearBuffer() {
     ;
 }
 
+const char *mensagemErro(ERROS erro) {
+  switch (erro) {
+  case OK:
+    return "Operação realizada com sucesso.";
+
+  case MAX_CONTATOS:
+    return "A agenda atingiu seu limite máximo de contatos. Não é possível "
+           "adicionar mais contatos.";
+
+  case SEM_CONTATOS:
+    return "A agenda não possui contatos.";
+
+  case NAO_ENCONTRADO:
+    return "Não foi possível encontrar o contato. Verifique o número digitado";
+
+  case ABRIR:
+    return "Erro ao abrir arquivo.";
+
+  default:
+    return "Erro desconhecido.";
+  }
+}
