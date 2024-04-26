@@ -1,9 +1,11 @@
 #include "tarefas.h"
 #include <stdio.h>
 
+// Função para limpar o buffer de entrada
 void clearInputBuffer() {
-    int c;
-    while ((c = getchar()) != '\n' && c != EOF);
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
 }
 
 int main() {
@@ -20,10 +22,10 @@ int main() {
     printf("5. Carregar agenda do arquivo binário\n");
     printf("0. Sair\n");
     printf("Escolha uma opção: ");
-    if (scanf("%d", &opcao) != 1) {  
-        clearInputBuffer();  
-        printf("\nOpção inválida. Tente novamente.\n");
-        continue;  
+    if (scanf("%d", &opcao) != 1) { // Verifica se a entrada é um número
+      clearInputBuffer();           // Limpa o buffer de entrada
+      printf("\nOpção inválida. Tente novamente.\n");
+      continue; // Pula para a próxima iteração do loop
     }
 
     switch (opcao) {
@@ -44,6 +46,7 @@ int main() {
         printf("\nErro ao listar contatos: %s\n", mensagemErro(erro));
       }
       break;
+
     case 3:
       printf("Você selecionou a opção de deletar um contato.\n");
       erro = deletar_contato(agenda, &qnt_contatos);
@@ -53,6 +56,7 @@ int main() {
         printf("\n%s\n", mensagemErro(erro));
       }
       break;
+
     case 4:
       printf("Você selecionou a opção de salvar agenda.\n");
       erro = salvar_agenda(agenda, qnt_contatos);
@@ -62,6 +66,7 @@ int main() {
         printf("\n%s\n", mensagemErro(erro));
       }
       break;
+
     case 5:
       printf("Você selecionou a opção de carregar agenda.\n");
       erro = carregar_agenda(agenda, &qnt_contatos);
@@ -71,14 +76,14 @@ int main() {
         printf("\n%s\n", mensagemErro(erro));
       }
       break;
+
     case 0:
       printf("\nVocê saiu do programa.\n");
       break;
+
     default:
-      if (opcao != 0 && opcao != 1 && opcao != 2 && opcao != 3 && opcao != 4 &&
-          opcao != 5) {
-        printf("\nOpção inválida. Tente novamente.\n");
-      }
+      printf("\nOpção inválida. Tente novamente.\n");
+      break;
     }
   } while (opcao != 0);
 
