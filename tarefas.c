@@ -118,26 +118,3 @@ const char *mensagemErro(ERROS erro) {
   }
 
 }
-
-const char *mensagemErro(ERROS erro) {
-  switch (erro) {
-  case OK:
-    return "Operação realizada com sucesso.";
-
-  case MAX_CONTATOS:
-    return "A agenda atingiu seu limite máximo de contatos. Não é possível "
-           "adicionar mais contatos.";
-
-  case SEM_CONTATOS:
-    return "A agenda não possui contatos.";
-
-  case NAO_ENCONTRADO:
-    return "Não foi possível encontrar o contato. Verifique o número digitado";
-
-  case ABRIR:
-    return "Erro ao abrir arquivo.";
-
-  default:
-    return "Erro desconhecido.";
-  }
-}
