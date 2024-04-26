@@ -1,10 +1,9 @@
 #include "tarefas.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int main() {
   int opcao;
+  ERROS erro;
 
   do {
     printf("\n1. Adicionar contato\n");
@@ -19,23 +18,38 @@ int main() {
     switch (opcao) {
     case 1:
       printf("Você selecionou a opção de adicionar contato.\n");
-      adicionar_contato();
+      erro = adicionar_contato();
+      if (erro != OK) {
+        printf("Erro ao adicionar contato: %d\n", erro);
+      }
       break;
     case 2:
       printf("Você selecionou a opção de listar contatos.\n");
-      listar_contatos();
+      erro = listar_contatos();
+      if (erro != OK) {
+        printf("Erro ao listar contatos: %d\n", erro);
+      }
       break;
     case 3:
       printf("Você selecionou a opção de deletar um contato.\n");
-      deletar_contato();
+      erro = deletar_contato();
+      if (erro != OK) {
+        printf("Erro ao deletar contato: %d\n", erro);
+      }
       break;
     case 4:
       printf("Você selecionou a opção de salvar agenda.\n");
-      salvar_agenda();
+      erro = salvar_agenda();
+      if (erro != OK) {
+        printf("Erro ao salvar agenda: %d\n", erro);
+      }
       break;
     case 5:
       printf("Você selecionou a opção de carregar agenda.\n");
-      carregar_agenda();
+      erro = carregar_agenda();
+      if (erro != OK) {
+        printf("Erro ao carregar agenda: %d\n", erro);
+      }
       break;
     case 0:
       printf("Você saiu do programa.\n");

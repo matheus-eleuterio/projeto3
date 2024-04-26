@@ -3,24 +3,18 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_CONTATOS 255
+#define LIMITE_CONTATOS 255
 
-struct Contato {
-  char nome[20];
-  char sobrenome[40];
-  char email[80];
-  char telefone[11];
-};
-
-struct Contato agenda[MAX_CONTATOS];
+Contato agenda[LIMITE_CONTATOS];
 int qnt_contatos = 0;
 
-void adicionar_contato() {
-  if (qnt_contatos >= MAX_CONTATOS) {
+ERROS adicionar_contato() {
+  if (qnt_contatos >= LIMITE_CONTATOS) {
     printf("\nA agenda atingiu seu limite máximo de contatos. Não é possível "
            "adicionar mais contatos.\n");
-    return;
+    return MAX_CONTATOS;
   }
+
   printf("\nNome: ");
   scanf(" %[^\n]", agenda[qnt_contatos].nome);
   printf("Sobrenome: ");
@@ -32,12 +26,13 @@ void adicionar_contato() {
   qnt_contatos++;
 
   printf("\nContato adicionado na agenda com sucesso!\n");
+  return OK;
 }
 
-void listar_contatos() {
+ERROS listar_contatos() {
   if (qnt_contatos == 0) {
     printf("\nA agenda não possui contatos.\n");
-    return;
+    return SEM_CONTATOS; // Vinculando o erro SEM_CONTATOS à função
   }
 
   printf("\nLista de contatos:\n");
@@ -47,14 +42,16 @@ void listar_contatos() {
            agenda[i].telefone);
   }
 
-  getchar();
+  getchar(); // Limpar o buffer
+  return OK;
 }
 
-void deletar_contato() {
+ERROS deletar_contato() {
   if (qnt_contatos == 0) {
     printf("\nNão existem contatos para deletar!\n");
-    return;
+    return SEM_CONTATOS;
   }
+
   char telefone[15];
   printf("\nDigite o telefone do contato que deseja deletar: ");
   scanf(" %[^\n]", telefone);
@@ -75,34 +72,45 @@ void deletar_contato() {
   if (!contato_existe) {
     printf(
         "Não foi possível encontrar o contato. Verifique o número digitado.\n");
+    return NAO_ENCONTRADO;
   }
+
+  return OK;
 }
 
-void salvar_agenda() {
+ERROS salvar_agenda() {
   FILE *arquivo = fopen("agenda.bin", "wb");
 
   if (arquivo == NULL) {
-      printf("Erro ao abrir o arquivo!\n");
-      return;
+    printf("Erro ao abrir o arquivo!\n");
+    return ABRIR;
   }
 
-  fwrite(agenda, sizeof(struct Contato), qnt_contatos, arquivo);
+  fwrite(agenda, sizeof(Contato), qnt_contatos, arquivo);
   fclose(arquivo);
 
   printf("\nAgenda salva em arquivo binário!\n");
+  return OK;
 }
 
-void carregar_agenda() {
-  FILE *arquivo;
-  arquivo = fopen("agenda.bin", "rb");
+ERROS carregar_agenda() {
+  FILE *arquivo = fopen("agenda.bin", "rb");
 
   if (arquivo == NULL) {
-      printf("Erro ao abrir o arquivo!\n");
-      return;
+    printf("Erro ao abrir o arquivo!\n");
+    return ABRIR;
   }
 
-  qnt_contatos = fread(agenda, sizeof(struct Contato), MAX_CONTATOS, arquivo);
+  qnt_contatos = fread(agenda, sizeof(Contato), LIMITE_CONTATOS, arquivo);
   fclose(arquivo);
 
   printf("\nAgenda carregada do arquivo binário!\n");
+  return OK;
 }
+
+void clearBuffer() {
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
+}
+
