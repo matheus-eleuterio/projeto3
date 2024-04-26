@@ -1,4 +1,4 @@
-# projeto333
+# Projeto 3: Agenda de Contatos
 
 -O projeto cria uma aplicação em C para gerenciar contatos, permitindo adicionar, listar e deletar contatos, além de salvar e carregar a agenda a partir de um arquivo binário.
 
