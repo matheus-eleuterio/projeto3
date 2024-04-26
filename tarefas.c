@@ -1,34 +1,118 @@
-#ifndef TAREFAS_H
-#define TAREFAS_H
+#include "tarefas.h"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
-#define LIMITE_CONTATOS 255
+ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
+  if (*qnt_contatos >= LIMITE_CONTATOS) {
+    return MAX_CONTATOS;
+  }
 
-typedef struct {
-  char nome[20];
-  char sobrenome[40];
-  char email[80];
-  char telefone[11];
-} Contato;
+  printf("\nNome: ");
+  scanf(" %[^\n]", agenda[*qnt_contatos].nome);
+  printf("Sobrenome: ");
+  scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
+  printf("E-mail: ");
+  scanf(" %[^\n]", agenda[*qnt_contatos].email);
+  printf("Telefone (DDD+apenas números): ");
+  scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
+  (*qnt_contatos)++;
+  return OK;
+}
 
-typedef enum {
-  OK,
-  MAX_CONTATOS,
-  SEM_CONTATOS,
-  NAO_ENCONTRADO,
-  ABRIR,
-  FECHAR,
-  ESCREVER,
-  LER
-} ERROS;
+ERROS listar_contatos(Contato *agenda, int qnt_contatos) {
+  if (qnt_contatos == 0) {
+    return SEM_CONTATOS;
+  }
 
-ERROS adicionar_contato();
-ERROS listar_contatos();
-ERROS deletar_contato();
-ERROS salvar_agenda();
-ERROS carregar_agenda();
+  printf("\nLista de contatos:\n");
+  for (int i = 0; i < qnt_contatos; i++) {
+    printf("\n%d) Nome: %s %s | Email: %s | Telefone: %s\n", i + 1,
+           agenda[i].nome, agenda[i].sobrenome, agenda[i].email,
+           agenda[i].telefone);
+  }
+  clearBuffer();
+  return OK;
+}
 
-void clearBuffer();
+ERROS deletar_contato(Contato *agenda, int *qnt_contatos) {
+  if (*qnt_contatos == 0) {
+    return SEM_CONTATOS;
+  }
 
-const char *mensagemErro(ERROS erro);
+  char telefone[15];
+  printf("\nDigite o telefone do contato que deseja deletar: ");
+  scanf(" %[^\n]", telefone);
 
-#endif
+  int contato_existe = 0;
+  for (int i = 0; i < *qnt_contatos; i++) {
+    if (strcmp(telefone, agenda[i].telefone) == 0) {
+      contato_existe = 1;
+      for (int j = i; j < *qnt_contatos - 1; j++) {
+        agenda[j] = agenda[j + 1];
+      }
+      (*qnt_contatos)--;
+      return OK;
+      break;
+    }
+  }
+
+  if (!contato_existe) {
+    return NAO_ENCONTRADO;
+  }
+  return OK;
+}
+
+ERROS salvar_agenda(Contato *agenda, int qnt_contatos) {
+  FILE *arquivo = fopen("agenda.bin", "wb");
+
+  if (arquivo == NULL) {
+    return ABRIR;
+  }
+
+  fwrite(agenda, sizeof(Contato), qnt_contatos, arquivo);
+  fclose(arquivo);
+  return OK;
+}
+
+ERROS carregar_agenda(Contato *agenda, int *qnt_contatos) {
+  FILE *arquivo = fopen("agenda.bin", "rb");
+
+  if (arquivo == NULL) {
+    return ABRIR;
+  }
+
+  *qnt_contatos = fread(agenda, sizeof(Contato), LIMITE_CONTATOS, arquivo);
+  fclose(arquivo);
+
+  return OK;
+}
+
+void clearBuffer() {
+  int c;
+  while ((c = getchar()) != '\n' && c != EOF)
+    ;
+}
+
+const char *mensagemErro(ERROS erro) {
+  switch (erro) {
+  case OK:
+    return "Operação realizada com sucesso.";
+
+  case MAX_CONTATOS:
+    return "A agenda atingiu seu limite máximo de contatos. Não é possível "
+           "adicionar mais contatos.";
+
+  case SEM_CONTATOS:
+    return "A agenda não possui contatos.";
+
+  case NAO_ENCONTRADO:
+    return "Não foi possível encontrar o contato. Verifique o número digitado";
+
+  case ABRIR:
+    return "Erro ao abrir arquivo.";
+
+  default:
+    return "Erro desconhecido.";
+  }
+}
