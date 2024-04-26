@@ -1,10 +1,11 @@
 #include "tarefas.h"
 #include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 int main() {
+  Contato agenda[LIMITE_CONTATOS];
+  int qnt_contatos = 0;
   int opcao;
+  ERROS erro;
 
   do {
     printf("\n1. Adicionar contato\n");
@@ -19,30 +20,56 @@ int main() {
     switch (opcao) {
     case 1:
       printf("Você selecionou a opção de adicionar contato.\n");
-      adicionar_contato();
+      erro = adicionar_contato(agenda, &qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao adicionar contato: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
+      }
       break;
+
     case 2:
       printf("Você selecionou a opção de listar contatos.\n");
-      listar_contatos();
+      erro = listar_contatos(agenda, qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao listar contatos: %s\n", mensagemErro(erro));
+      }
       break;
     case 3:
       printf("Você selecionou a opção de deletar um contato.\n");
-      deletar_contato();
+      erro = deletar_contato(agenda, &qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao deletar contato: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
+      }
       break;
     case 4:
       printf("Você selecionou a opção de salvar agenda.\n");
-      salvar_agenda();
+      erro = salvar_agenda(agenda, qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao salvar agenda: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
+      }
       break;
     case 5:
       printf("Você selecionou a opção de carregar agenda.\n");
-      carregar_agenda();
+      erro = carregar_agenda(agenda, &qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao carregar agenda: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
+      }
       break;
     case 0:
-      printf("Você saiu do programa.\n");
+      printf("\nVocê saiu do programa.\n");
       break;
     default:
-      printf("Opção inválida! Entre com uma opção válida ou digite 0 para "
-             "sair.\n");
+      if (opcao != 0 && opcao != 1 && opcao != 2 && opcao != 3 && opcao != 4 &&
+          opcao != 5) {
+        printf("\nOpção inválida. Tente novamente.\n");
+      }
     }
   } while (opcao != 0);
 
