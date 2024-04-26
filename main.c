@@ -1,6 +1,11 @@
 #include "tarefas.h"
 #include <stdio.h>
 
+void clearInputBuffer() {
+    int c;
+    while ((c = getchar()) != '\n' && c != EOF);
+}
+
 int main() {
   Contato agenda[LIMITE_CONTATOS];
   int qnt_contatos = 0;
@@ -15,7 +20,11 @@ int main() {
     printf("5. Carregar agenda do arquivo binário\n");
     printf("0. Sair\n");
     printf("Escolha uma opção: ");
-    scanf("%d", &opcao);
+    if (scanf("%d", &opcao) != 1) {  
+        clearInputBuffer();  
+        printf("\nOpção inválida. Tente novamente.\n");
+        continue;  
+    }
 
     switch (opcao) {
     case 1:
