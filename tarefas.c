@@ -31,7 +31,7 @@ void adicionar_contato() {
   scanf(" %[^\n]", agenda[qnt_contatos].telefone);
   qnt_contatos++;
 
-  printf("Contato adicionado a agenda com sucesso!\n");
+  printf("\nContato adicionado na agenda com sucesso!\n");
 }
 
 void listar_contatos() {
@@ -67,7 +67,7 @@ void deletar_contato() {
         agenda[j] = agenda[j + 1];
       }
       qnt_contatos--;
-      printf("Contato deletado com sucesso!\n");
+      printf("\nContato deletado com sucesso!\n");
       break;
     }
   }
@@ -104,5 +104,5 @@ void carregar_agenda() {
   qnt_contatos = fread(agenda, sizeof(struct Contato), MAX_CONTATOS, arquivo);
   fclose(arquivo);
 
-  printf("\nAgenda carregada do arquivo binario!\n");
+  printf("\nAgenda carregada do arquivo binário!\n");
 }
