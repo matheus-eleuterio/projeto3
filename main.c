@@ -23,8 +23,11 @@ int main() {
       erro = adicionar_contato(agenda, &qnt_contatos);
       if (erro != OK) {
         printf("\nErro ao adicionar contato: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
       }
       break;
+
     case 2:
       printf("Você selecionou a opção de listar contatos.\n");
       erro = listar_contatos(agenda, qnt_contatos);
@@ -37,6 +40,8 @@ int main() {
       erro = deletar_contato(agenda, &qnt_contatos);
       if (erro != OK) {
         printf("\nErro ao deletar contato: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
       }
       break;
     case 4:
@@ -44,6 +49,8 @@ int main() {
       erro = salvar_agenda(agenda, qnt_contatos);
       if (erro != OK) {
         printf("\nErro ao salvar agenda: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
       }
       break;
     case 5:
@@ -51,6 +58,8 @@ int main() {
       erro = carregar_agenda(agenda, &qnt_contatos);
       if (erro != OK) {
         printf("\nErro ao carregar agenda: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
       }
       break;
     case 0:
