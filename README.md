@@ -11,6 +11,7 @@ O projeto teve como objetivo criar uma agenda de contatos desenvolvida em lingua
 - **Carregar agenda do arquivo binário:** Permite que o usuário carregue os contatos salvos no arquivo binário "agenda.bin" para a agenda atual.
 
 **Execução do código**
+
 Siga os passos:
 
 1) É necessário ter um compilador de C instalado na sua máquina. Neste projeto usaremos o GCC.
