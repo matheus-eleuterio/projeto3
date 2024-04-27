@@ -1,6 +1,6 @@
 # Projeto 3: Agenda de Contatos em C
 
-O projeto teve como objetivo criar uma agenda de contatos desenvolvida em linguagem C. O usuário pode criar, listar, deletar, salvar e carregar os contatos em arquivo binário. Projeto desenvolvido para a disciplina CC2632.
+O projeto teve como objetivo criar uma agenda de contatos desenvolvida em linguagem C. O usuário pode criar, listar, deletar, salvar e carregar os contatos em arquivo binário. 
 
 **Funcionalidades**
 
@@ -13,8 +13,12 @@ O projeto teve como objetivo criar uma agenda de contatos desenvolvida em lingua
 **Execução do código**
 Siga os passos:
 
-**1)** É necessário ter um compilador de C instalado na sua máquina. Neste projeto usaremos o GCC.
-**2)** Abra o terminal na pasta que esta salvo os arquivos que compoem o projeto.
-**3)** Digite "gcc main.c tarefas.c -o agenda" no terminal para compilar o programa.
-**4)** Digite "./agenda" no terminal para executar o programa.
-**5)** Selecione uma das opções do menu.
+1) É necessário ter um compilador de C instalado na sua máquina. Neste projeto usaremos o GCC.
+2) Abra o terminal na pasta que esta salvo os arquivos que compoem o projeto.
+3) Digite "gcc main.c tarefas.c -o agenda" no terminal para compilar o programa.
+4) Digite "./agenda" no terminal para executar o programa.
+5) Selecione uma das opções do menu.
+
+
+
+Projeto desenvolvido por Matheus Eleutério e Danilo Chiarelli para a disciplina CC2632.
