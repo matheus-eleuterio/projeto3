@@ -4,11 +4,11 @@ O projeto teve como objetivo criar uma agenda de contatos desenvolvida em lingua
 
 **Funcionalidades**
 
-*Adicionar contato:* permite que o usuário crie um novo contato na agenda. O usuário cadastra um novo contato a partir do nome, sobrenome, e-mail e telefone.
-*Listar contatos:* Lista e exibe para o usuário os contatos que fazem parte da agenda.
-*Deletar contato:* Permite que o usuário exclua um contato da lista através do numero de telefone.
-*Salvar agenda em arquivo binário:* Permite que o usuário salve os contatos da agenda em um arquivo binário.
-*Carregar agenda do arquivo binário:* Permite que o usuário carregue os contatos salvos no arquivo binário "agenda.bin" para a agenda atual.
+- *Adicionar contato:* permite que o usuário crie um novo contato na agenda. O usuário cadastra um novo contato a partir do nome, sobrenome, e-mail e telefone.
+- *Listar contatos:* Lista e exibe para o usuário os contatos que fazem parte da agenda.
+- *Deletar contato:* Permite que o usuário exclua um contato da lista através do numero de telefone.
+- *Salvar agenda em arquivo binário:* Permite que o usuário salve os contatos da agenda em um arquivo binário.
+- *Carregar agenda do arquivo binário:* Permite que o usuário carregue os contatos salvos no arquivo binário "agenda.bin" para a agenda atual.
 
 **Execução do código**
 Siga os passos:
