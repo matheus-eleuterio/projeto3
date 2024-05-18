@@ -1,14 +1,29 @@
 # Projeto 3: Agenda de Contatos em C
 
-O projeto teve como objetivo criar uma agenda de contatos desenvolvida em linguagem C. O usuário pode criar, listar, deletar, salvar e carregar os contatos em arquivo binário. 
+### Descrição
 
-**Funcionalidades**
+O projeto teve como objetivo criar um sistema de gerenciamento de contas bancárias desenvolvido em linguagem C. O sistema permite criar, listar, deletar contas, realizar depósitos, débitos, transferências e gerar extratos. Além disso, salva automaticamente as operações em um arquivo binário.
 
-- **Adicionar contato:** permite que o usuário crie um novo contato na agenda. O usuário cadastra um novo contato a partir do nome, sobrenome, e-mail e telefone.
-- **Listar contatos:** Lista e exibe para o usuário os contatos que fazem parte da agenda.
-- **Deletar contato:** Permite que o usuário exclua um contato da lista através do numero de telefone.
-- **Salvar agenda em arquivo binário:** Permite que o usuário salve os contatos da agenda em um arquivo binário.
-- **Carregar agenda do arquivo binário:** Permite que o usuário carregue os contatos salvos no arquivo binário "agenda.bin" para a agenda atual.
+### Funcionalidades
+
+1. *Criar Nova Conta*: Permite criar uma nova conta bancária fornecendo informações como nome, CPF, tipo de conta, depósito inicial e senha.
+2. *Listar Clientes*: Exibe uma lista de todas as contas cadastradas no banco, mostrando o nome, CPF, tipo de conta e saldo.
+3. *Deletar Conta*: Permite deletar uma conta do banco fornecendo o CPF da conta a ser deletada.
+4. *Débito*: Permite debitar um valor de uma conta bancária, considerando limites e taxas conforme o tipo de conta.
+5. *Depósito*: Permite depositar um valor em uma conta bancária.
+6. *Extrato*: Gera um extrato bancário em formato de arquivo texto, detalhando todas as operações realizadas na conta.
+7. *Transferência*: Permite transferir valores entre contas bancárias.
+
+### Estrutura do Projeto
+
+- *main.c*: Contém a função principal do programa e o menu de navegação.
+- *tarefas.c*: Implementa as funções de operações do banco, como criar conta, listar contas, deletar conta, debitar, depositar, transferir e gerar extrato.
+- *tarefas.h*: Define as estruturas de dados utilizadas no programa e declara as funções implementadas em tarefas.c.
+
+### Estruturas de Dados
+
+- *dados_cliente*: Estrutura que armazena as informações de uma conta bancária, incluindo nome, CPF, tipo de conta, saldo e senha.
+- *operacao*: Estrutura que armazena as informações de uma operação realizada em uma conta bancária, incluindo CPF, valor e descrição.
 
 **Execução do código**
 
@@ -20,6 +35,23 @@ Siga os passos:
 4) Digite "./agenda" no terminal para executar o programa.
 5) Selecione uma das opções do menu.
 
+### Uso
 
 
-Projeto desenvolvido por Matheus Eleutério e Danilo Chiarelli para a disciplina CC2632.
+
+Ao executar o programa, será exibido um menu com as seguintes opções:
+
+O banco de dados é criado após realizar a primeira operação bancária.
+
+1. *Nova conta*: Permite criar uma nova conta fornecendo as informações solicitadas.
+2. *Listar clientes*: Exibe a lista de todas as contas cadastradas.
+3. *Deletar conta*: Permite deletar uma conta fornecendo o CPF da conta.
+4. *Débito*: Permite debitar um valor de uma conta.
+5. *Depósito*: Permite depositar um valor em uma conta.
+6. *Extrato*: Gera um extrato detalhado das operações de uma conta.
+7. *Transferência entre contas*: Permite transferir valores entre contas.
+0. *Sair*: Encerra o programa.
+
+Projeto desenvolvido por Matheus Eleutério, Danilo Chiarelli e Jeferson Roque para a disciplina CC2632.
+
+
