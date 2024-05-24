@@ -11,14 +11,14 @@ ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
 
   printf("\nNome: ");
   scanf(" %[^\n]", agenda[*qnt_contatos].nome);
+  
   printf("Sobrenome: ");
   scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
 
-  char email[80];
   printf("E-mail: ");
-  scanf(" %[^\n]", email);
+  scanf(" %[^\n]", agenda[*qnt_contatos].email);
 
-  if (!validar_email(email)) {
+  if (!validar_email(agenda[*qnt_contatos].email)) {
     return EMAIL_INVALIDO;
   }
 
