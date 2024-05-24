@@ -1,4 +1,5 @@
 #include "tarefas.h"
+#include <regex.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -12,10 +13,23 @@ ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
   scanf(" %[^\n]", agenda[*qnt_contatos].nome);
   printf("Sobrenome: ");
   scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
+
+  char email[80];
   printf("E-mail: ");
-  scanf(" %[^\n]", agenda[*qnt_contatos].email);
+  scanf(" %[^\n]", email);
+
+  if (!validar_email(email)) {
+    return EMAIL_INVALIDO;
+  }
+
+  strcpy(agenda[*qnt_contatos].email, email);
+
   printf("Telefone (DDD+apenas números): ");
   scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
+  if (!validar_email(email)) {
+    return EMAIL_INVALIDO;
+  }
+
   (*qnt_contatos)++;
   return OK;
 }
@@ -88,11 +102,28 @@ ERROS carregar_agenda(Contato *agenda, int *qnt_contatos) {
   return OK;
 }
 
+ERROS validar_email(char *email) {
+  regex_t regex;
+  int reti;
+  reti = regcomp(&regex, "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
+                 REG_EXTENDED);
+  if (reti) {
+    fprintf(stderr, "!!Erro!!\n");
+    return 0;
+  }
+  reti = regexec(&regex, email, 0, NULL, 0);
+  regfree(&regex);
+  if (!reti) {
+    return 1; // 1 quando valida posito
+  } else {
+    return 0; // 0 pra quando falha
+  }
+}
+
 void clearBuffer() {
   int c;
   while ((c = getchar()) != '\n' && c != EOF)
     ;
-
 }
 
 const char *mensagemErro(ERROS erro) {
@@ -108,13 +139,16 @@ const char *mensagemErro(ERROS erro) {
     return "A agenda não possui contatos.";
 
   case NAO_ENCONTRADO:
-    return "Não foi possível encontrar o contato. Verifique o número digitado";
+    return "Não foi possível encontrar o contato. Verifique o número "
+           "digitado";
 
   case ABRIR:
     return "Erro ao abrir arquivo.";
 
+  case EMAIL_INVALIDO:
+    return "Insira um e-mail válido.";
+
   default:
     return "Erro desconhecido.";
   }
-
 }
