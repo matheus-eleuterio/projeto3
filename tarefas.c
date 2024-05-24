@@ -22,12 +22,13 @@ ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
     return EMAIL_INVALIDO;
   }
 
-  strcpy(agenda[*qnt_contatos].email, email);
-
   printf("Telefone (DDD+apenas números): ");
   scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
-  if (!validar_email(email)) {
-    return EMAIL_INVALIDO;
+
+  for (int i = 0; i < *qnt_contatos; i++) {
+    if (strcmp(agenda[i].telefone, agenda[*qnt_contatos].telefone) == 0) {
+      return TELEFONE_EXISTE;
+    }
   }
 
   (*qnt_contatos)++;
@@ -120,6 +121,16 @@ ERROS validar_email(char *email) {
   }
 }
 
+ERROS verificar_telefone(Contato *agenda, int qnt_contatos,
+                         const char *telefone) {
+  for (int i = 0; i < qnt_contatos; i++) {
+    if (strcmp(agenda[i].telefone, telefone) == 0) {
+      return TELEFONE_EXISTE;
+    }
+  }
+  return OK;
+}
+
 void clearBuffer() {
   int c;
   while ((c = getchar()) != '\n' && c != EOF)
@@ -148,6 +159,8 @@ const char *mensagemErro(ERROS erro) {
   case EMAIL_INVALIDO:
     return "Insira um e-mail válido.";
 
+  case TELEFONE_EXISTE:
+    return "Esse telefone já consta em nossa agenda. Insira outro número.";
   default:
     return "Erro desconhecido.";
   }
