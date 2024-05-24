@@ -1,8 +1,6 @@
 #include "tarefas.h"
 #include <stdio.h>
 
-
-// Função para limpar o buffer de entrada
 void clearInputBuffer() {
   int c;
   while ((c = getchar()) != '\n' && c != EOF)
@@ -21,12 +19,13 @@ int main() {
     printf("3. Deletar contato\n");
     printf("4. Salvar agenda em arquivo binário\n");
     printf("5. Carregar agenda do arquivo binário\n");
+    printf("6. Editar contato\n");
     printf("0. Sair\n");
     printf("Escolha uma opção: ");
-    if (scanf("%d", &opcao) != 1) { 
-      clearInputBuffer();           
+    if (scanf("%d", &opcao) != 1) {
+      clearInputBuffer();
       printf("\nOpção inválida. Tente novamente.\n");
-      continue; 
+      continue;
     }
 
     switch (opcao) {
@@ -78,6 +77,16 @@ int main() {
       }
       break;
 
+    case 6:
+      printf("Você selecionou a opção de editar contato.\n");
+      erro = editar_contato(agenda, &qnt_contatos);
+      if (erro != OK) {
+        printf("\nErro ao editar contato: %s\n", mensagemErro(erro));
+      } else {
+        printf("\n%s\n", mensagemErro(erro));
+      }
+      break;
+
     case 0:
       printf("\nVocê saiu do programa.\n");
       break;
@@ -91,7 +100,6 @@ int main() {
           opcao != 5) {
         printf("\nOpção inválida. Tente novamente.\n");
       }
-
     }
   } while (opcao != 0);
 

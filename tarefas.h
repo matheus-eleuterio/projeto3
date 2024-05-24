@@ -20,7 +20,9 @@ typedef enum {
   ESCREVER,
   LER,
   EMAIL_INVALIDO,
-  TELEFONE_EXISTE
+  TELEFONE_EXISTE,
+  OPCAO_INVALIDA,
+  CANCELAR
 } ERROS;
 
 ERROS adicionar_contato();
@@ -30,6 +32,7 @@ ERROS salvar_agenda();
 ERROS carregar_agenda();
 ERROS validar_email();
 ERROS verificar_telefone();
+ERROS editar_contato();
 
 void clearBuffer();
 
