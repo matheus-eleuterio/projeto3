@@ -23,10 +23,10 @@ int main() {
     printf("5. Carregar agenda do arquivo binário\n");
     printf("0. Sair\n");
     printf("Escolha uma opção: ");
-    if (scanf("%d", &opcao) != 1) { // Verifica se a entrada é um número
-      clearInputBuffer();           // Limpa o buffer de entrada
+    if (scanf("%d", &opcao) != 1) { 
+      clearInputBuffer();           
       printf("\nOpção inválida. Tente novamente.\n");
-      continue; // Pula para a próxima iteração do loop
+      continue; 
     }
 
     switch (opcao) {
