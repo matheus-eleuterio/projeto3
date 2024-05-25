@@ -30,6 +30,10 @@ ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
     if (!validar_email(email)) {
         return EMAIL_INVALIDO;
     }
+    if (verificar_email(agenda, *qnt_contatos, email) == EMAIL_EXISTE) {
+        return EMAIL_EXISTE;
+    }
+  
     strcpy(agenda[*qnt_contatos].email, email);
 
     char telefone[15];
@@ -170,6 +174,15 @@ ERROS verificar_telefone(Contato *agenda, int qnt_contatos, const char *telefone
   return OK;
 }
 
+ERROS verificar_email(Contato *agenda, int qnt_contatos, const char *email) {
+  for (int i = 0; i < qnt_contatos; i++) {
+    if (strcmp(agenda[i].email, email) == 0) {
+      return EMAIL_EXISTE;
+    }
+  }
+  return OK;
+}
+
 ERROS editar_contato(Contato *agenda, int qnt_contatos) {
   if (qnt_contatos == 0) {
     return SEM_CONTATOS;
@@ -257,6 +270,10 @@ const char *mensagemErro(ERROS erro) {
 
   case TELEFONE_INVALIDO:
     return "Insira um telefone válido.";
+
+  case EMAIL_EXISTE:
+    return "Este e-mail já esta vinculado a um contato.";
+
 
   default:
     return "Erro desconhecido.";
