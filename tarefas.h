@@ -23,7 +23,7 @@ typedef enum {
     EMAIL_INVALIDO,
     TELEFONE_EXISTE,
     OPCAO_INVALIDA,
-    CANCELAR
+    TELEFONE_INVALIDO
 } ERROS;
 
 ERROS adicionar_contato(Contato *agenda, int *qnt_contatos);
@@ -32,6 +32,7 @@ ERROS deletar_contato(Contato *agenda, int *qnt_contatos);
 ERROS salvar_agenda(Contato *agenda, int qnt_contatos, const char *nome_arquivo, int tipo_agenda);
 ERROS carregar_agenda(Contato *agenda, int *qnt_contatos, const char *nome_arquivo, int *tipo_agenda);
 ERROS validar_email(const char *email);
+ERROS validar_telefone(const char *telefone);
 ERROS verificar_telefone(Contato *agenda, int qnt_contatos, const char *telefone);
 ERROS editar_contato(Contato *agenda, int qnt_contatos);
 ERROS escolher_agenda();
