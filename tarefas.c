@@ -4,6 +4,15 @@
 #include <stdlib.h>
 #include <string.h>
 
+ERROS escolher_agenda() {
+  int escolha;
+  do {
+    printf("Qual agenda você deseja acessar? (1 - Pessoal | 2 - Trabalho): ");
+    scanf("%d", &escolha);
+  } while (escolha != 1 && escolha != 2);
+  return escolha;
+}
+
 ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
   if (*qnt_contatos >= LIMITE_CONTATOS) {
     return MAX_CONTATOS;
@@ -11,24 +20,24 @@ ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
 
   printf("\nNome: ");
   scanf(" %[^\n]", agenda[*qnt_contatos].nome);
-  
   printf("Sobrenome: ");
   scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
 
+  char email[80];
   printf("E-mail: ");
-  scanf(" %[^\n]", agenda[*qnt_contatos].email);
+  scanf(" %[^\n]", email);
 
-  if (!validar_email(agenda[*qnt_contatos].email)) {
+  if (!validar_email(email)) {
     return EMAIL_INVALIDO;
   }
+  strcpy(agenda[*qnt_contatos].email, email);
 
   printf("Telefone (DDD+apenas números): ");
   scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
 
-  for (int i = 0; i < *qnt_contatos; i++) {
-    if (strcmp(agenda[i].telefone, agenda[*qnt_contatos].telefone) == 0) {
-      return TELEFONE_EXISTE;
-    }
+  if (verificar_telefone(agenda, *qnt_contatos,
+                         agenda[*qnt_contatos].telefone) == TELEFONE_EXISTE) {
+    return TELEFONE_EXISTE;
   }
 
   (*qnt_contatos)++;
@@ -68,7 +77,6 @@ ERROS deletar_contato(Contato *agenda, int *qnt_contatos) {
       }
       (*qnt_contatos)--;
       return OK;
-      break;
     }
   }
 
@@ -78,32 +86,38 @@ ERROS deletar_contato(Contato *agenda, int *qnt_contatos) {
   return OK;
 }
 
-ERROS salvar_agenda(Contato *agenda, int qnt_contatos) {
-  FILE *arquivo = fopen("agenda.bin", "wb");
+ERROS salvar_agenda(Contato *agenda, int qnt_contatos, const char *nome_arquivo,
+                    int tipo_agenda) {
+  FILE *arquivo = fopen(nome_arquivo, "wb");
 
   if (arquivo == NULL) {
     return ABRIR;
   }
 
+  fwrite(&tipo_agenda, sizeof(int), 1, arquivo);
+  fwrite(&qnt_contatos, sizeof(int), 1, arquivo);
   fwrite(agenda, sizeof(Contato), qnt_contatos, arquivo);
   fclose(arquivo);
   return OK;
 }
 
-ERROS carregar_agenda(Contato *agenda, int *qnt_contatos) {
-  FILE *arquivo = fopen("agenda.bin", "rb");
+ERROS carregar_agenda(Contato *agenda, int *qnt_contatos,
+                      const char *nome_arquivo, int *tipo_agenda) {
+  FILE *arquivo = fopen(nome_arquivo, "rb");
 
   if (arquivo == NULL) {
     return ABRIR;
   }
 
-  *qnt_contatos = fread(agenda, sizeof(Contato), LIMITE_CONTATOS, arquivo);
+  fread(tipo_agenda, sizeof(int), 1, arquivo);
+  fread(qnt_contatos, sizeof(int), 1, arquivo);
+  fread(agenda, sizeof(Contato), *qnt_contatos, arquivo);
   fclose(arquivo);
 
   return OK;
 }
 
-ERROS validar_email(char *email) {
+ERROS validar_email(const char *email) {
   regex_t regex;
   int reti;
   reti = regcomp(&regex, "[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}",
@@ -115,7 +129,7 @@ ERROS validar_email(char *email) {
   reti = regexec(&regex, email, 0, NULL, 0);
   regfree(&regex);
   if (!reti) {
-    return 1; // 1 quando valida posito
+    return 1; // 1 quando valida positivo
   } else {
     return 0; // 0 pra quando falha
   }
@@ -135,9 +149,8 @@ ERROS editar_contato(Contato *agenda, int qnt_contatos) {
   if (qnt_contatos == 0) {
     return SEM_CONTATOS;
   }
-
   char telefone[15];
-  printf("\nDigite o telefone do contato que deseja editar: ");
+  printf("Digite o telefone do contato que deseja editar: ");
   scanf(" %[^\n]", telefone);
   clearBuffer();
 
@@ -150,7 +163,7 @@ ERROS editar_contato(Contato *agenda, int qnt_contatos) {
       printf("3. E-mail\n");
       printf("4. Telefone\n");
       printf("0. Cancelar\n");
-      printf("Escolha uma opção: \n");
+      printf("Escolha uma opção: ");
       scanf("%d", &opcao);
       clearBuffer();
 
@@ -160,32 +173,30 @@ ERROS editar_contato(Contato *agenda, int qnt_contatos) {
 
       switch (opcao) {
       case 1:
-        printf("Digite o nome: ");
+        printf("\nDigite o novo nome: ");
         scanf(" %[^\n]", agenda[i].nome);
         break;
       case 2:
-        printf("Digite o sobrenome: ");
+        printf("\nDigite o novo sobrenome: ");
         scanf(" %[^\n]", agenda[i].sobrenome);
         break;
       case 3:
-        printf("Digite o e-mail: ");
+        printf("\nDigite o novo e-mail: ");
         scanf(" %[^\n]", agenda[i].email);
         break;
       case 4:
-        printf("Digite o telefone: ");
+        printf("\nDigite o novo telefone: ");
         scanf(" %[^\n]", agenda[i].telefone);
         break;
       case 0:
-        printf("Operação cancelada.\n");
-        return CANCELAR;
+        printf("\nOperação cancelada.\n");
       }
-
-      printf("Dados do contato editados com sucesso.\n");
       return OK;
     }
   }
   return NAO_ENCONTRADO;
 }
+
 
 void clearBuffer() {
   int c;
@@ -196,7 +207,7 @@ void clearBuffer() {
 const char *mensagemErro(ERROS erro) {
   switch (erro) {
   case OK:
-    return "Operação realizada com sucesso.";
+    return "Operação realizada com sucesso.\n";
 
   case MAX_CONTATOS:
     return "A agenda atingiu seu limite máximo de contatos. Não é possível "
