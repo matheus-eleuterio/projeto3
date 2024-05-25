@@ -14,35 +14,42 @@ ERROS escolher_agenda() {
 }
 
 ERROS adicionar_contato(Contato *agenda, int *qnt_contatos) {
-  if (*qnt_contatos >= LIMITE_CONTATOS) {
-    return MAX_CONTATOS;
-  }
+    if (*qnt_contatos >= LIMITE_CONTATOS) {
+        return MAX_CONTATOS;
+    }
 
-  printf("\nNome: ");
-  scanf(" %[^\n]", agenda[*qnt_contatos].nome);
-  printf("Sobrenome: ");
-  scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
+    printf("\nNome: ");
+    scanf(" %[^\n]", agenda[*qnt_contatos].nome);
+    printf("Sobrenome: ");
+    scanf(" %[^\n]", agenda[*qnt_contatos].sobrenome);
 
-  char email[80];
-  printf("E-mail: ");
-  scanf(" %[^\n]", email);
+    char email[80];
+    printf("E-mail: ");
+    scanf(" %[^\n]", email);
 
-  if (!validar_email(email)) {
-    return EMAIL_INVALIDO;
-  }
-  strcpy(agenda[*qnt_contatos].email, email);
+    if (!validar_email(email)) {
+        return EMAIL_INVALIDO;
+    }
+    strcpy(agenda[*qnt_contatos].email, email);
 
-  printf("Telefone (DDD+apenas números): ");
-  scanf(" %[^\n]", agenda[*qnt_contatos].telefone);
+    char telefone[15];
+    printf("Telefone (DDD+números(11 dígitos)): ");
+    scanf(" %[^\n]", telefone);
 
-  if (verificar_telefone(agenda, *qnt_contatos,
-                         agenda[*qnt_contatos].telefone) == TELEFONE_EXISTE) {
-    return TELEFONE_EXISTE;
-  }
+    if (validar_telefone(telefone) != OK) {
+        return TELEFONE_INVALIDO;
+    }
 
-  (*qnt_contatos)++;
-  return OK;
+    if (verificar_telefone(agenda, *qnt_contatos, telefone) == TELEFONE_EXISTE) {
+        return TELEFONE_EXISTE;
+    }
+
+    strcpy(agenda[*qnt_contatos].telefone, telefone);
+
+    (*qnt_contatos)++;
+    return OK;
 }
+
 
 ERROS listar_contatos(Contato *agenda, int qnt_contatos) {
   if (qnt_contatos == 0) {
@@ -86,8 +93,7 @@ ERROS deletar_contato(Contato *agenda, int *qnt_contatos) {
   return OK;
 }
 
-ERROS salvar_agenda(Contato *agenda, int qnt_contatos, const char *nome_arquivo,
-                    int tipo_agenda) {
+ERROS salvar_agenda(Contato *agenda, int qnt_contatos, const char *nome_arquivo, int tipo_agenda) {
   FILE *arquivo = fopen(nome_arquivo, "wb");
 
   if (arquivo == NULL) {
@@ -101,8 +107,7 @@ ERROS salvar_agenda(Contato *agenda, int qnt_contatos, const char *nome_arquivo,
   return OK;
 }
 
-ERROS carregar_agenda(Contato *agenda, int *qnt_contatos,
-                      const char *nome_arquivo, int *tipo_agenda) {
+ERROS carregar_agenda(Contato *agenda, int *qnt_contatos, const char *nome_arquivo, int *tipo_agenda) {
   FILE *arquivo = fopen(nome_arquivo, "rb");
 
   if (arquivo == NULL) {
@@ -135,8 +140,28 @@ ERROS validar_email(const char *email) {
   }
 }
 
-ERROS verificar_telefone(Contato *agenda, int qnt_contatos,
-                         const char *telefone) {
+ERROS validar_telefone(const char *telefone) {
+    regex_t regex;
+    int reti;
+
+    reti = regcomp(&regex, "^[0-9]{11}$", REG_EXTENDED);
+    if (reti) {
+        fprintf(stderr, "!!ERRO!!.\n");
+        return TELEFONE_INVALIDO;
+    }
+
+    reti = regexec(&regex, telefone, 0, NULL, 0);
+
+    regfree(&regex);
+
+    if (!reti) {
+        return OK;
+    } else {
+        return TELEFONE_INVALIDO;
+    }
+}
+
+ERROS verificar_telefone(Contato *agenda, int qnt_contatos, const char *telefone) {
   for (int i = 0; i < qnt_contatos; i++) {
     if (strcmp(agenda[i].telefone, telefone) == 0) {
       return TELEFONE_EXISTE;
@@ -210,15 +235,13 @@ const char *mensagemErro(ERROS erro) {
     return "Operação realizada com sucesso.\n";
 
   case MAX_CONTATOS:
-    return "A agenda atingiu seu limite máximo de contatos. Não é possível "
-           "adicionar mais contatos.";
+    return "A agenda atingiu seu limite máximo de contatos. Não é possível adicionar mais contatos.";
 
   case SEM_CONTATOS:
     return "A agenda não possui contatos.";
 
   case NAO_ENCONTRADO:
-    return "Não foi possível encontrar o contato. Verifique o número "
-           "digitado.";
+    return "Não foi possível encontrar o contato. Verifique o número digitado.";
 
   case ABRIR:
     return "Erro ao abrir arquivo.";
@@ -232,8 +255,8 @@ const char *mensagemErro(ERROS erro) {
   case OPCAO_INVALIDA:
     return "Opção inválida! Selecione uma opção de 1 a 4.";
 
-  case CANCELAR:
-    return "Operação cancelada";
+  case TELEFONE_INVALIDO:
+    return "Insira um telefone válido.";
 
   default:
     return "Erro desconhecido.";
